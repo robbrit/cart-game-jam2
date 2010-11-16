@@ -54,8 +54,16 @@ function Sprite:getHeight()
   return self.current_anim:getHeight()
 end
 
-function Sprite:draw()
+function Sprite:draw(options)
+  love.graphics.push()
+  options = options or {}
+  
+  if options["flip"] == true then
+    love.graphics.scale(0.5, 1)
+  end
+
   love.graphics.drawq(self.current_anim:getImage(), self.quad, self.x, self.y)
+  love.graphics.pop()
 end
 
 function Sprite:move(dx, dy)

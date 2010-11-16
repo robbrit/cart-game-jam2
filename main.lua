@@ -5,8 +5,9 @@ require "sprite.lua"
 animations = {}
 sprites = {}
 bear = nil
+speed = 100
 
-direction = "right"
+direction = nil
 
 MAXFPS = 60
 
@@ -14,10 +15,12 @@ function love.load()
   -- load animations
   animations["bear_idle"]    = Animation:new("images/bear_idle.png", 64, {0.5, 0.5, 0.5, 0.5})
   animations["bear_walking"] = Animation:new("images/bear_walk.png", 64, {0.166, 0.333, 0.166, 0.333})
+  animations["bear_walking_left"] = Animation:new("images/bear_walk_left.png", 64, {0.166, 0.333, 0.166, 0.333})
 
   sprites["bear"] = Sprite:new(0, 0, {
     idle = animations["bear_idle"],
-    walking = animations["bear_walking"]
+    walking = animations["bear_walking"],
+    walking_left = animations["bear_walking_left"]
   })
 
   sprites["bear"]:setAnimation("walking")
@@ -49,16 +52,16 @@ function love.update(dt)
 
   if direction == "up" then
     bear:setAnimation("idle")
-    bear:move(0, -1)
+    bear:move(0, -dt * speed)
   elseif direction == "down" then
     bear:setAnimation("idle")
-    bear:move(0, 1)
+    bear:move(0, dt * speed)
   elseif direction == "left" then
-    bear:setAnimation("walking")
-    bear:move(-1, 0)
+    bear:setAnimation("walking_left")
+    bear:move(-dt * speed, 0)
   elseif direction == "right" then
     bear:setAnimation("walking")
-    bear:move(1, 0)
+    bear:move(dt * speed, 0)
   end
 
   -- Update the sprites
@@ -66,7 +69,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  sprites["bear"]:draw({flip = true})
+  sprites["bear"]:draw()
 end
 
 function love.keypressed(key)
@@ -83,6 +86,8 @@ end
 
 function love.keyreleased(key)
   -- just make any of them clear direction for now
-  direction = nil
-  sprites["bear"]:setAnimation("idle")
+  if key == direction then
+    direction = nil
+    sprites["bear"]:setAnimation("idle")
+  end
 end
