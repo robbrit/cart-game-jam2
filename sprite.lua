@@ -54,13 +54,7 @@ function Sprite:getHeight()
   return self.current_anim:getHeight()
 end
 
-function Sprite:draw(options)
-  options = options or {}
-
-  if options["flip"] == true then
-    self.quad:flip()
-  end
-
+function Sprite:draw()
   love.graphics.drawq(self.current_anim:getImage(), self.quad, self.x, self.y)
 end
 

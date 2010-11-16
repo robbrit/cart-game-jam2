@@ -66,11 +66,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  if direction == "left" then
-    sprites["bear"]:draw({flip = true})
-  else
-    sprites["bear"]:draw()
-  end
+  sprites["bear"]:draw({flip = true})
 end
 
 function love.keypressed(key)
